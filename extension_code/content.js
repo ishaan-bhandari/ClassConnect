@@ -6,22 +6,35 @@ if (button) {
   console.log("Button not found");
 }
 
-allElements = document.querySelectorAll("*");
-classSet = new Set();
-console.log("running");
-allElements.forEach((element) => {
-  element.classList.forEach((className) => {
-    if (element.getAttribute("data-entry-id") === "1_a4g92nen") {
-      // console.log(element.getAttribute("href"));
-    }
-    classSet.add(className);
-  });
-});
-
-// console.log([...classList]);
-
 allLinks = document.querySelectorAll(".js-download-attachment-link");
-playButton = document.querySelector('button[title="Play clip"]');
-console.log(playButton);
 console.log(allLinks[1].getAttribute("href"));
+// Send the data to the extension
+(async () => {
+  const response = await chrome.runtime.sendMessage({
+    link: allLinks[1].getAttribute("href"),
+  });
+  // do something with response here, not outside the function
+  console.log("recieved");
+})();
 
+// fetch("", {
+//   method: "POST", // Specify the method
+//   headers: {
+//     "Content-Type": "application/json", // Specify the content type
+//   },
+//   body: JSON.stringify({
+//     link: linkToSend, // Data you want to send in JSON format
+//   }),
+// })
+//   .then((response) => {
+//     if (response.ok) {
+//       return response.json(); // or response.text() if the server sends non-JSON response
+//     }
+//     throw new Error("Network response was not ok.");
+//   })
+//   .then((data) => {
+//     console.log("Success:", data); // Handling the success response
+//   })
+//   .catch((error) => {
+//     console.error("Error:", error); // Handling errors
+//   });

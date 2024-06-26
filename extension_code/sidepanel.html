@@ -2,12 +2,24 @@
 <html>
 
 <head>
-  <title class="hello">My Sidepanel</title>
+  <title class="hello">Class Connect</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <h1>All sites sidepanel extension</h1>
-  <p>This side panel is enabled on all sites</p>
+  <h1>Class Connect</h1>
+  <div class="quiz-container">
+    <h1 id="question"></h1>
+    <ul>
+      <li><button id="answer-a" onclick="checkAnswer('a')">A) Madrid</button></li>
+      <li><button id="answer-b" onclick="checkAnswer('b')">B) Berlin</button></li>
+      <li><button id="answer-c" onclick="checkAnswer('c')">C) Paris</button></li>
+      <li><button id="answer-d" onclick="checkAnswer('d')">D) Rome</button></li>
+    </ul>
+    <p id="feedback"></p>
+    <button id="skipButton" class="skip-button">Skip</button>
+  </div>
+
   <button id="listClasses">List Classes</button>
   <script src="sidepanel.js"></script>
 </body>
