@@ -1,3 +1,4 @@
+timestamps = [];
 var button = document.getElementById("tab-attachments-tab"); // Replace 'buttonId' with the actual ID of the button
 if (button) {
   button.click();
@@ -14,7 +15,8 @@ console.log(allLinks[1].getAttribute("href"));
     link: allLinks[1].getAttribute("href"),
   });
   // do something with response here, not outside the function
-  console.log("recieved");
+  console.log(response.timestamps);
+  timestamps = response.timestamps;
 })();
 
 // fetch("", {

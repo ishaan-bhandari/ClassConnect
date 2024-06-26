@@ -11,16 +11,19 @@
   <div class="quiz-container">
     <h1 id="question"></h1>
     <ul>
-      <li><button id="answer-a" onclick="checkAnswer('a')">A) Madrid</button></li>
-      <li><button id="answer-b" onclick="checkAnswer('b')">B) Berlin</button></li>
-      <li><button id="answer-c" onclick="checkAnswer('c')">C) Paris</button></li>
-      <li><button id="answer-d" onclick="checkAnswer('d')">D) Rome</button></li>
+      <li><button id="answer-a">A) Madrid</button></li>
+      <li><button id="answer-b">B) Berlin</button></li>
+      <li><button id="answer-c">C) Paris</button></li>
+      <li><button id="answer-d">D) Rome</button></li>
+      <li hidden id="right-answer">C</li>
     </ul>
     <p id="feedback"></p>
     <button id="skipButton" class="skip-button">Skip</button>
   </div>
 
   <button id="listClasses">List Classes</button>
+  <script src="question.js"></script>
+
   <script src="sidepanel.js"></script>
 </body>
 
