@@ -1,17 +1,20 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import json
 import re
 import os
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
+import requests
 
 app = Flask(__name__)
+
+transcript_list = []
 
 
 def preprocess_text(text):
     text = text.lower()
-    text = re.sub(r'[^\w\s]', '', text)  # Remove punctuation
-    text = re.sub(r'\s+', ' ', text)  # Remove extra whitespace
+    text = re.sub(r'[^\w\s]', '', text)
+    text = re.sub(r'\s+', ' ', text)
     return text
 
 
@@ -24,6 +27,7 @@ def segment_transcript(data, num_questions):
     word_count = 0
 
     for word in data:
+        transcript_list.append(word['w'])
         if word_count < words_per_question:
             current_segment.append(word['w'])
             word_count += 1
@@ -59,7 +63,6 @@ def parse_response(response):
     return parsed_array
 
 
-@app.route('/generate-questions', methods=['GET'])
 def generate_questions():
     with open('sample_transcript.json', 'r') as file:
         data = json.load(file)
@@ -70,8 +73,7 @@ def generate_questions():
 
     load_dotenv()
     questions = []
-    model = ChatOpenAI(
-        openai_api_key=os.getenv("OPENAI_API_KEY"))
+    model = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
 
     for segment in segments[:4]:
         prompt = f"""
@@ -101,7 +103,28 @@ def generate_questions():
         parsed = parse_response(question)
         timestamps[end_times[i]] = parsed
 
-    return jsonify(timestamps)
+    return jsonify(timestamps), 200
+
+
+@app.route('/get_transcript', methods=['GET'])
+def get_transcript():
+    link = request.headers.get('Transcript-Url')
+    if not link:
+        return jsonify({"error": "Transcript-Url header is missing"}), 400
+
+    try:
+        response = requests.get(link)
+        response.raise_for_status()
+    except requests.RequestException as e:
+        return jsonify({"error": str(e)}), 400
+
+    try:
+        with open('transcript.json', 'w') as file:
+            json.dump(response.json(), file)
+    except (ValueError, IOError) as e:
+        return jsonify({"error": str(e)}), 500
+
+    return generate_questions()
 
 
 if __name__ == '__main__':
