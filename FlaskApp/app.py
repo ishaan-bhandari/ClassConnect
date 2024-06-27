@@ -11,7 +11,7 @@ from langchain.schema import Document
 # from langchain.embeddings import OpenAIEmbeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
-import openai
+import openai 
 from dotenv import load_dotenv
 import os
 import shutil
@@ -24,11 +24,21 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from dotenv import load_dotenv
 
+import json
+
+
+
+
+
 app = Flask(__name__)
 CHROMA_PATH = "chroma"
+DATA_PATH = ""
 
-transcript_list = []
-transcript = ""
+# transcript_list = []
+# transcript = ""
+
+
+created = False
 
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
@@ -39,18 +49,20 @@ Answer the question based only on the following context:
 
 Answer the question based on the above context: {question}
 """
-
+def load_documents():
+    loader = DirectoryLoader(DATA_PATH, glob="*.md")
+    documents = loader.load()
+    return documents
 
 def generate_data_store():
-    transcript = " ".join(transcript_list)
-    documents = Document(page_content=transcript)
+    # transcript = " ".join(transcript_list)
+    documents = load_documents()
     chunks = split_text(documents)
     save_to_chroma(chunks)
 
-
 def split_text(documents):
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300,
+        chunk_size=512,
         chunk_overlap=100,
         length_function=len,
         add_start_index=True,
@@ -64,6 +76,17 @@ def split_text(documents):
 
     return chunks
 
+def json_to_text():
+    with open('transcript.json', 'r') as file:
+        data = json.load(file)
+    words = []
+    for word in data:
+        words.append(word['w'])
+
+    final = " ".join(words)
+    
+    with open("trans.md", "w") as file:
+        file.write(final)
 
 def save_to_chroma(chunks):
     # Clear out the database first.
@@ -78,38 +101,37 @@ def save_to_chroma(chunks):
     print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
 
 
-@app.route('/test')
-def test():
-    print(request.headers)
-
-    query_text = request.args.get('query_text')
-    print(query_text)
-    return "hello bitch"
-
 
 @app.route('/query_rag_model', methods=['GET'])
 def query_rag_model():
+    global created
+    if not created:
+        json_to_text()
+        generate_data_store()
+        created = True
 
     print(request.headers)
 
-    query_text = request.args.get('query_text')
+    query_text = request.headers.get('query_text')
+
 
     print("here", query_text)
 
     embedding_function = OpenAIEmbeddings()
 
+    
     db = Chroma(persist_directory=CHROMA_PATH,
                 embedding_function=embedding_function)
 
     results = db.similarity_search_with_relevance_scores(query_text, k=3)
     if len(results) == 0 or results[0][1] < 0.7:
         print(f"Unable to find matching results.")
-        return
+        return jsonify("This lecture does not cover this information"), 200
 
-    print("here2", results)
+    print("here2", results)    
 
-    context_text = "\n\n---\n\n".join(
-        [doc.page_content for doc, _score in results])
+    context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
+
 
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
@@ -137,7 +159,7 @@ def segment_transcript(data, num_questions):
     word_count = 0
 
     for word in data:
-        transcript_list.append(word['w'])
+        # transcript_list.append(word['w'])
         if word_count < words_per_question:
             current_segment.append(word['w'])
             word_count += 1
@@ -149,7 +171,6 @@ def segment_transcript(data, num_questions):
     if current_segment:
         segments.append(' '.join(current_segment))
         end_times.append(word['e'] // 1000)
-    generate_data_store()
     return segments, end_times
 
 

@@ -28,10 +28,12 @@ function checkAnswer(selectedAnswer) {
     console.log("right");
     feedback.textContent = "Correct!";
     feedback.className = "correct";
+    feedback.style.color = "green";
   } else {
     console.log("wrong");
     feedback.textContent = "Incorrect. Try again!";
     feedback.className = "incorrect";
+    feedback.style.color = "red";
   }
 }
 

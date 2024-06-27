@@ -38,6 +38,8 @@ async function send_transcript(req) {
 }
 
 function change_question(idx) {
+  document.querySelector(".quiz-container").style.display = "block";
+  document.querySelector(".btn-get-started").style.display = "none";
   document.getElementById("question").innerHTML = question_bank[idx].Question;
   document.getElementById("answer-a").innerHTML = question_bank[idx].A;
   document.getElementById("answer-b").innerHTML = question_bank[idx].B;
@@ -47,17 +49,10 @@ function change_question(idx) {
     question_bank[idx].Correct;
 }
 
-function send_ack() {
-  (async () => {
-    const response = await chrome.runtime.sendMessage({ request: "play" });
-    // do something with response here, not outside the function
-    console.log(response);
-  })();
-}
-
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   console.log(request.type);
   if (request.type == "initial") {
+    console.log("right request");
     send_transcript(request.link).then(() => {
       // console.log("here");
       sendResponse({ timestamps: timestamps });
@@ -80,15 +75,10 @@ document.getElementById("listClasses").addEventListener("click", function () {
   });
 });
 
-document.addEventListener("DOMContentLoaded", (event) => {
-  document.getElementById("skipButton").addEventListener("click", () => {
-    send_ack();
-  });
-});
-
 document.getElementById("submitButton").addEventListener("click", function () {
   const question = document.getElementById("questionInput").value;
   url = `http://127.0.0.1:5000/query_rag_model`;
+  console.log("submit");
   fetch(url, {
     method: "GET", // Specify the method
     headers: {

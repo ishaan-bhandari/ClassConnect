@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Global side panel",
+  "name": "Class Connect",
   "version": "1.0",
   "description": "Shows how to display the same side panel on every site using the Side Panel API.",
   "icons": {
