@@ -27,7 +27,7 @@ Class Connect is an interactive MediaSpace Chrome Extension designed to enhance 
 - Generate answers using GPT-3.5 Turbo 🚀 based on retrieved information.
 
 ## Technical Architecture
-<img width="816" alt="image" src="https://github.com/ishaan-bhandari/ClassConnect/assets/66647978/799d4f24-fa85-4f4f-8200-3367cc0db4fe">
+![technical_architecture](https://github.com/ishaan-bhandari/ClassConnect/assets/66647978/d06213be-21a7-480a-8c71-2bf2f708d2ef)
 
 ## Development Stack
 
