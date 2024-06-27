@@ -1,0 +1,82 @@
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  padding: 20px;
+}
+
+
+.quiz-container {
+  display: none;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+.btn-get-started {
+  display: inline-block;
+  padding: 15px 30px;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 50px;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.3s;
+}
+.btn-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-get-started:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.btn-get-started:active {
+  background-color: #004080;
+  transform: translateY(2px);
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+p#feedback {
+  color: green;
+  font-weight: bold;
+}
+.skip-button {
+  padding: 8px 16px;
+  border: none;
+  align-self: flex-end;
+  background-color: red;
+  color: white;
+  left: 100px;
+  border-radius: 4px;
+  cursor: pointer;
+}

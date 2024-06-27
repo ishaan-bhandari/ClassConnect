@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+
+<head>
+  <title class="hello">Class Connect</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .input-container {
+      display: flex;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    button-submit {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button-submit:hover {
+      background-color: #0056b3;
+    }
+
+    #responseBox {
+      margin-top: 10px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      min-height: 50px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Class Connect</h1>
+  <div class="btn-div"">
+    <button class=" btn-get-started" id="listClasses">Begin!</button>
+  </div>
+
+  <div class="quiz-container">
+    <h1 id="question"></h1>
+
+    <ul>
+      <li><button id="answer-a">A) Madrid</button></li>
+      <li><button id="answer-b">B) Berlin</button></li>
+      <li><button id="answer-c">C) Paris</button></li>
+      <li><button id="answer-d">D) Rome</button></li>
+      <li hidden id="right-answer">C</li>
+    </ul>
+    <p id="feedback"></p>
+
+  </div>
+  <div class="container">
+    <h2>Ask a Question</h2>
+    <div class="input-container">
+      <input type="text" id="questionInput" placeholder="Type your question here...">
+      <button id="submitButton">Submit</button>
+    </div>
+  </div>
+
+  <div id="responseBox"></div>
+  </div>
+
+  <script src="question.js"></script>
+
+  <script src="sidepanel.js"></script>
+</body>
+
+</html>
