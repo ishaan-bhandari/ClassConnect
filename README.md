@@ -77,7 +77,7 @@ Follow the following developer tools to set up a Chrome Extension: [here](https:
 
 
 ## Video Demo
-https://youtu.be/iS9gBX4RY2w
+https://youtu.be/i7vJvzvM7Zo
 
 ## Contributors
 
