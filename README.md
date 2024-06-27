@@ -1,8 +1,8 @@
-# space.AI
+# Class Connect
 
 ## Project Summary
 
-space.AI is an interactive MediaSpace Chrome Extension designed to enhance video learning by incorporating interactive elements. It leverages LLM-generated questions and a RAG (Retrieval-Augmented Generation) system using a Chroma vector database and the text-embedding-3-large embedding model. 
+Class Connect is an interactive MediaSpace Chrome Extension designed to enhance video learning by incorporating interactive elements. It leverages LLM-generated questions and a RAG (Retrieval-Augmented Generation) system using a Chroma vector database and the text-embedding-3-large embedding model. 
 
 ## Key Features & Technical Implementation
 
