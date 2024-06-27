@@ -75,6 +75,10 @@ flask run
 
 Follow the following developer tools to set up a Chrome Extension: [here](https://developer.chrome.com/docs/extensions/get-started)
 
+
+## Video Demo
+https://youtu.be/iS9gBX4RY2w
+
 ## Contributors
 
 - Harsh Bishnoi (harshitbishnoi2301@gmail.com)
