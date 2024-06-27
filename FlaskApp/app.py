@@ -64,7 +64,7 @@ def parse_response(response):
 
 
 def generate_questions():
-    with open('sample_transcript.json', 'r') as file:
+    with open('transcript.json', 'r') as file:
         data = json.load(file)
 
     total_words = len(data)

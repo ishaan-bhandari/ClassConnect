@@ -2,14 +2,15 @@
 question_bank = [];
 timestamps = [];
 
-async function send_transcript(request) {
-  url = `http://127.0.0.1:5000/generate-questions`;
+async function send_transcript(req) {
+  url = `http://127.0.0.1:5000/get_transcript`;
+  console.log(req);
 
   await fetch(url, {
     method: "GET", // Specify the method
     headers: {
       "Content-Type": "application/json", // Specify the content type
-      Transript_Url: request,
+      "Transcript-Url": req,
     },
   })
     .then((response) => {
@@ -37,22 +38,36 @@ async function send_transcript(request) {
 }
 
 function change_question(idx) {
-  document.getElementById("question").innerHTML = question_bank[idx].question;
+  document.getElementById("question").innerHTML = question_bank[idx].Question;
+  document.getElementById("answer-a").innerHTML = question_bank[idx].A;
+  document.getElementById("answer-b").innerHTML = question_bank[idx].B;
+  document.getElementById("answer-c").innerHTML = question_bank[idx].C;
+  document.getElementById("answer-d").innerHTML = question_bank[idx].D;
+  document.getElementById("right-answer").innerHTML =
+    question_bank[idx].Correct;
+}
+
+function send_ack() {
+  (async () => {
+    const response = await chrome.runtime.sendMessage({ request: "play" });
+    // do something with response here, not outside the function
+    console.log(response);
+  })();
 }
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-  if (request.type == "question") {
+  console.log(request.type);
+  if (request.type == "initial") {
+    send_transcript(request.link).then(() => {
+      // console.log("here");
+      sendResponse({ timestamps: timestamps });
+    });
   }
 
-  if (request.type == "question") {
+  if (request.type == "interrupt") {
+    change_question(request.question_idx);
+    sendResponse({ response: "done" });
   }
-  if (request.type == "question") {
-  }
-
-  send_transcript(request.link).then(() => {
-    // console.log("here");
-    sendResponse({ timestamps: timestamps });
-  });
 
   return true;
 });
@@ -64,6 +79,52 @@ document.getElementById("listClasses").addEventListener("click", function () {
     });
   });
 });
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  document.getElementById("skipButton").addEventListener("click", () => {
+    send_ack();
+  });
+});
+
+document.getElementById("submitButton").addEventListener("click", function () {
+  const question = document.getElementById("questionInput").value;
+  url = `http://127.0.0.1:5000/query_rag_model`;
+  fetch(url, {
+    method: "GET", // Specify the method
+    headers: {
+      "Content-Type": "application/json", // Specify the content type
+      query_text: question,
+    },
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json(); // or response.text() if the server sends non-JSON response
+      }
+      throw new Error("Network response was not ok.");
+    })
+    .then((data) => {
+      console.log("Success:", data); // Handling the success response
+
+      const responseBox = document.getElementById("responseBox");
+      responseBox.textContent = data;
+
+      //   sendResponse(timestamps);
+    })
+    .catch((error) => {
+      console.error("Error:", error); // Handling errors
+    });
+  //
+
+  document.getElementById("questionInput").value = "";
+});
+
+document
+  .getElementById("questionInput")
+  .addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+      document.getElementById("submitButton").click();
+    }
+  });
 // function listAllClassNames() {
 //   const allElements = document.querySelectorAll("*"); // Select all elements on the page
 //   const classNames = new Set(); // Use a Set to avoid duplicates
