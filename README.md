@@ -1,10 +1,10 @@
 # Class Connect
 
+**1st Place Overall, Seamless Integration Award @ UIUC Research Park Hackathon 2024**
+
 ## Project Summary
 
 Class Connect is an interactive MediaSpace Chrome Extension designed to enhance video learning by incorporating interactive elements. It leverages LLM-generated questions and a RAG (Retrieval-Augmented Generation) system using a Chroma vector database and the text-embedding-3-large embedding model. 
-
-- **1st Place Overall, Seamless Integration Award @ UIUC Research Park Hackathon 2024**
 
 ## Key Features & Technical Implementation
 
